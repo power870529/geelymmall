@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.power.dao.CategoryMapper" >
-  <resultMap id="BaseResultMap" type="com.power.pojo.Category" >
+<mapper namespace="com.mmall.dao.CategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.mmall.pojo.Category" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="parent_id" property="parentId" jdbcType="INTEGER" />
     <result column="name" property="name" jdbcType="VARCHAR" />
@@ -23,14 +23,14 @@
     delete from mmall_category
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.power.pojo.Category" >
+  <insert id="insert" parameterType="com.mmall.pojo.Category" >
     insert into mmall_category (id, parent_id, name, 
       status, sort_order, create_time, 
       update_time)
     values (#{id,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
       #{status,jdbcType=BIT}, #{sortOrder,jdbcType=INTEGER}, now(), now())
   </insert>
-  <insert id="insertSelective" parameterType="com.power.pojo.Category" >
+  <insert id="insertSelective" parameterType="com.mmall.pojo.Category" >
     insert into mmall_category
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -48,12 +48,7 @@
       <if test="sortOrder != null" >
         sort_order,
       </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
+        create_time, update_time
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -71,15 +66,10 @@
       <if test="sortOrder != null" >
         #{sortOrder,jdbcType=INTEGER},
       </if>
-      <if test="createTime != null" >
-        now(),
-      </if>
-      <if test="updateTime != null" >
-        now(),
-      </if>
+        now(), now()
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.power.pojo.Category" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.mmall.pojo.Category" >
     update mmall_category
     <set >
       <if test="parentId != null" >
@@ -103,7 +93,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.power.pojo.Category" >
+  <update id="updateByPrimaryKey" parameterType="com.mmall.pojo.Category" >
     update mmall_category
     set parent_id = #{parentId,jdbcType=INTEGER},
       name = #{name,jdbcType=VARCHAR},
@@ -113,4 +103,11 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectCategoryChildrenByParentId" parameterType="int" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from mmall_category
+    where parent_id = #{categoryId}
+  </select>
 </mapper>
