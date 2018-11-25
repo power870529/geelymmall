@@ -219,7 +219,7 @@
 
   <select id="selectOrderStatusByCreatTime" parameterType="map" resultMap="BaseResultMap">
     select
-    <include refid="Base_ Base_Column_List"/>
+    <include refid="Base_Column_List"/>
     from mmall_order
     where status = #{status}
     <![CDATA[
